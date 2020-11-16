@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class MinBinaryHeap <V, P extends Comparable<P>> implements BinaryHeap<V, P> {
+public class MinBinaryHeap <V, P extends Comparable<P>> implements BinaryHeap<V,P> {
 
 	private List<Prioritized<V,P>> _heap;
 	
@@ -72,7 +72,7 @@ public class MinBinaryHeap <V, P extends Comparable<P>> implements BinaryHeap<V,
     }
 
 	@Override
-	public Prioritized<V,P> getMin() {
+	public Prioritized<V, P> getMin() {
 		if (size() < 1) {
 			throw new NoSuchElementException();
 		}

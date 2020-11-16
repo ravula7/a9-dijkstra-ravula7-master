@@ -2,10 +2,12 @@ package graph;
 
 
 import minBinHeap.MinBinaryHeap;
+import minBinHeap.PrioritizedImpl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Graph {
@@ -28,38 +30,48 @@ public class Graph {
     }
 
     public Map<String, Double> dijkstra(Vertex start) {
-
+        //need list, priority queue, map
         //where string is the vertex name and double is the distance from start
-        Map <String, Double> returnMap = new HashMap<>(); //table created
-        List <Vertex> vertices = new ArrayList<Vertex>();
-        start.setDistanceFromSource(0);
-        start.setPreviousVertex(null);
-        MinBinaryHeap <Vertex,Double> pq = new MinBinaryHeap<Vertex,Double>(); //queue created
+
+        Map <String, Double> returnMap = new HashMap<>(); //table created to return
+        List <Vertex> vertices = new ArrayList<Vertex>(); //list created (where dequeued/visited vertices go)
+
+        //start vertex gets its fields written in
+        start.setDistanceFromSource(0); //distance is 0
+        start.setPreviousVertex(null); //it has no incoming nodes so it has no previous vertex
+        MinBinaryHeap <Vertex,Double> pq = new MinBinaryHeap<Vertex,Double>(); //priority queue created where vertex is value and priority is a double
+
+        //start is enqueued onto priority queue first
         pq.enqueue(start, start.getDistanceFromSource());
-        while(pq.size() != 0) {
-            Vertex vertex = pq.dequeue();
-            vertices.add(vertex);
-            List <Edge> edges = vertex.getEdges();
-            for(Edge edge:edges){
-                if(vertices.contains(edge.getDestination())){ //if vertex is known
-                    //if(){
 
-                    //}
-                   // else if(edge.getDestination().getDistanceFromSource() > vertex.getDistanceFromSource()+edge.getWeight()){
-                        edge.getDestination().setDistanceFromSource(vertex.getDistanceFromSource()+edge.getWeight());
-                        edge.getDestination().setPreviousVertex(vertex);
-                   // }
+        while(pq.size() != 0) { //while the priority queue is not empty
+
+            Vertex vertex = pq.dequeue(); //dequeue the min from pq and set as the vertex you are using
+            vertices.add(vertex); //add the vertex to vertices list (like in the slides, goes from pq to list)
+            List <Edge> edges = vertex.getEdges(); //list created (where the edges of the vertices go)
+
+            for(int i = 0; i<edges.size(); i++){ //for all values in edges list (for all the edges of the vertex)
+                if(vertices.contains(edges.get(i).getDestination())){ //if the destination of the vertex's edge is known
+                    //2 cases
+                    if(Arrays.asList(pq).contains(new PrioritizedImpl<Vertex,Double>(edges.get(i).getDestination(),edges.get(i).getDestination().getDistanceFromSource()))) {
+                        edges.get(i).getDestination().setDistanceFromSource(vertex.getDistanceFromSource() + edges.get(i).getWeight());
+                        edges.get(i).getDestination().setPreviousVertex(vertex);
+                        pq.enqueue(edges.get(i).getDestination(), edges.get(i).getDestination().getDistanceFromSource());
+                    }
+                   else if(edges.get(i).getDestination().getDistanceFromSource() > vertex.getDistanceFromSource()+edges.get(i).getWeight()){
+                        edges.get(i).getDestination().setDistanceFromSource(vertex.getDistanceFromSource()+edges.get(i).getWeight());
+                        edges.get(i).getDestination().setPreviousVertex(vertex);
+                   }
                 }
-                //else { //else vertex is not known
-
-               // }
             }
-            returnMap.put(vertex.getLabel(),vertex.getDistanceFromSource());
+            returnMap.put(vertex.getLabel(),vertex.getDistanceFromSource()); //put the vertex in the map
         }
         return returnMap;
     }
 
+        //else { //else vertex is not known
 
+        // }
 
     // Do not edit anything below
 
