@@ -54,13 +54,13 @@ public class Graph {
                 if(vertices.contains(edge.getDestination())) { //if the destination of the vertex's edge is known
                     //2 cases
 
-                    if(Arrays.asList(pq).contains(new PrioritizedImpl<Vertex,Double>(edge.getDestination(),edge.getDestination().getDistanceFromSource()))){
+                    if(!Arrays.asList(pq).contains(new PrioritizedImpl<Vertex,Double>(edge.getDestination(),edge.getDestination().getDistanceFromSource()))){
                         edge.getDestination().setDistanceFromSource(vertex.getDistanceFromSource() + edge.getWeight());
                         edge.getDestination().setPreviousVertex(vertex);
                         pq.enqueue(edge.getDestination(), edge.getDestination().getDistanceFromSource());
                     }
 
-                   else if(edge.getDestination().getDistanceFromSource() < vertex.getDistanceFromSource()+edge.getWeight()){
+                   else if(edge.getDestination().getDistanceFromSource() > vertex.getDistanceFromSource()+edge.getWeight()){
                         edge.getDestination().setDistanceFromSource(vertex.getDistanceFromSource()+edge.getWeight());
                         edge.getDestination().setPreviousVertex(vertex);
                    }
