@@ -60,11 +60,14 @@ public class Graph {
                         pq.enqueue(edge.getDestination(), edge.getDestination().getDistanceFromSource());
                     }
 
-                   else if(edge.getDestination().getDistanceFromSource() > vertex.getDistanceFromSource()+edge.getWeight()){
+                   else if(edge.getDestination().getDistanceFromSource() < vertex.getDistanceFromSource()+edge.getWeight()){
                         edge.getDestination().setDistanceFromSource(vertex.getDistanceFromSource()+edge.getWeight());
                         edge.getDestination().setPreviousVertex(vertex);
                    }
                 }
+                //else{
+                //    vertices.add(edge.getDestination());
+               // }
             }
             returnMap.put(vertex.getLabel(),vertex.getDistanceFromSource()); //put the vertex in the map
         }
