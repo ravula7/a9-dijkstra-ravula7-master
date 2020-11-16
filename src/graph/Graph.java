@@ -51,9 +51,10 @@ public class Graph {
             List <Edge> edges = vertex.getEdges(); //list created (where the edges of the vertices go)
 
             for(int i = 0; i<edges.size(); i++){ //for all values in edges list (for all the edges of the vertex)
-                if(vertices.contains(edges.get(i).getDestination())){ //if the destination of the vertex's edge is known
+                if(vertices.contains(edges.get(i).getDestination())) { //if the destination of the vertex's edge is known
                     //2 cases
-                    if(Arrays.asList(pq).contains(new PrioritizedImpl<Vertex,Double>(edges.get(i).getDestination(),edges.get(i).getDestination().getDistanceFromSource()))) {
+
+                    if(Arrays.asList(pq).contains(new PrioritizedImpl<Vertex,Double>(edges.get(i).getDestination(),edges.get(i).getWeight()))) {
                         edges.get(i).getDestination().setDistanceFromSource(vertex.getDistanceFromSource() + edges.get(i).getWeight());
                         edges.get(i).getDestination().setPreviousVertex(vertex);
                         pq.enqueue(edges.get(i).getDestination(), edges.get(i).getDestination().getDistanceFromSource());
