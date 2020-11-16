@@ -53,20 +53,20 @@ public class Graph {
             for(Edge edge:edges){ //for all values in edges list (for all the edges of the vertex)
                 if(!vertices.contains(edge.getDestination())) { //if the destination vertex is unknown/not visited
                 //2 cases
+                    //if pq doesn't have edge, set dv and pv and enqueue it onto pq
                     if(!Arrays.asList(pq).contains(new PrioritizedImpl<Vertex,Double>(edge.getDestination(),edge.getDestination().getDistanceFromSource()))){
                         edge.getDestination().setDistanceFromSource(vertex.getDistanceFromSource() + edge.getWeight());
                         edge.getDestination().setPreviousVertex(vertex);
                         pq.enqueue(edge.getDestination(), edge.getDestination().getDistanceFromSource());
                     }
-
-                   else if(edge.getDestination().getDistanceFromSource() > vertex.getDistanceFromSource()+edge.getWeight()){
+                    //else the pq does have edge and can have 2 possibilities
+                    //edge distance is 0 or greater than weight & distance from source
+                    //set new distance from source and prev vertex - shorter path has been found
+                   else if(edge.getDestination().getDistanceFromSource() == 0 || edge.getDestination().getDistanceFromSource() > vertex.getDistanceFromSource()+edge.getWeight()){
                         edge.getDestination().setDistanceFromSource(vertex.getDistanceFromSource()+edge.getWeight());
                         edge.getDestination().setPreviousVertex(vertex);
                    }
                 }
-                //else{
-                //    vertices.add(edge.getDestination());
-               // }
             }
             returnMap.put(vertex.getLabel(),vertex.getDistanceFromSource()); //put the vertex in the map
         }
